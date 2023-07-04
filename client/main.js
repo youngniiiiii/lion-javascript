@@ -4,4 +4,3 @@ const a = 10;
 /* eslint-disable */
 
 const a = 10;
-console.log('hello js!');
