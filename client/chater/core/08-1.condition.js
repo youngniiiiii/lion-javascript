@@ -34,7 +34,7 @@ if (result > 0) {
 //     | 영화 볼거니?
 //           ↓
 //       Yes | No
-
+/* 
 // 영화 봤니?
 let didWatchMovie = confirm('너 엘리멘탈 영화 봤니?', '');
 // 영화 볼거니?
@@ -65,6 +65,35 @@ if (!didWatchMovie) {
     } else {
       console.log('너 T야?');
     }
+  }
+}
+ */
+let movie = confirm('영화봣어?');
+if (movie) {
+  let alone = confirm('혼자봤니?');
+  if (alone) {
+    let cry = confirm('울었니?');
+    if (cry) {
+      console.log('찌질하네');
+    } else {
+      console.log('너 T야?');
+    }
+  } else {
+    console.log('플러팅끝');
+  }
+} else {
+  let see = confirm('볼거니?');
+  if (see) {
+    let who = prompt('누구랑볼거니?');
+    if (who === '애인') {
+      console.log('zzz');
+    } else if (who === '가족') {
+      console.log('화목하네');
+    } else {
+      console.log('재밌게봐~');
+    }
+  } else {
+    console.log('플러팅끝');
   }
 }
 
