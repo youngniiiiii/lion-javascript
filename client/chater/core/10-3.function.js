@@ -63,3 +63,15 @@ let pow;
 
 // repeat(text: string, repeatCount: number): string;
 let repeat;
+
+
+
+const user = {
+  total:0,
+  name:'tiger',
+  age:32,
+  address:'서울시',
+  totalGrades:function({
+    
+  })
+}

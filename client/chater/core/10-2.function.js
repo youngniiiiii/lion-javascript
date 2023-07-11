@@ -16,7 +16,7 @@ const resultZ = calcTotal(9000, -2500, 5000, 11900);
 
 // 함수 선언 → 일반 함수 (표현)식
 let calculateTotal = function () {
-  console.log(arguments);
+  // console.log(arguments);
 
   //함수 안에서만 접근 가능한 인수들의 집합 객체로서 배열과 유사한 형태를 가지고 있는 것은? : arguments
   let total = 0;
@@ -52,21 +52,21 @@ let calculateTotal = function () {
   // return total;
 
   // 5;
-  let realArray = Array.from(arguments);
-  console.log(realArray);
+  // let realArray = Array.from(arguments);
+  // console.log(realArray);
 
+  // realArray.forEach(function (item) {
+  //   total += item;
+  // });
+
+  // return total;
+
+  // 6. 스프레드 신택스 spread syntax
+  let realArray = [...arguments];
+  console.log(realArray);
   realArray.forEach(function (item) {
     total += item;
   });
-
-  return total;
-  // 6. 스프레드 신택스 spread syntax
-  // let realArray = [...arguments];
-  // console.log(realArray);
-  // realArray.forEach(function (item) {
-  //   total += item;
-
-  // });
 
   // return total;
 
