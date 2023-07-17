@@ -42,6 +42,10 @@ console.log(friends);
 // 배열 요소 순환(loop)
 // for 문, for ~ of문
 
+for (const value of friends) {
+  // console.log(value);
+}
+
 // 배열 복사
 let copiedArray;
 
@@ -55,3 +59,4 @@ const matrix = [
 ];
 
 // 행렬의 정중앙에 위치한 요소를 찾으려면?
+matrix[1][1];
