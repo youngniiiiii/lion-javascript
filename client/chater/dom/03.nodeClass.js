@@ -49,17 +49,37 @@ console.log(first.nodeName === 'span');
 console.log(first.tagName === 'span');
 
 /* 노드 콘텐츠 읽기/쓰기 ---------------------------------------------------- */
-first.innerHTML = 'helloooooo';
 // - innerHTML   (많이 쓰지않아 해킹의 위험이있어)
+first.innerHTML += '<div>안녕!</div>';
+
 // * 기존 내용 삭제
+first.innerHTML += '';
+
 // * 기존 내용과 새로운 내용을 합친 새로운 내용을 씀
 
 // - textContent
+console.log((first.textContent = 'hi'));
+// 문자 추가하는것  게터와 세터의 능력을 동시에 가지고있다.
+
 // * 요소 내의 텍스트에 접근
 // * 태그는 제외하고 오로지 텍스트만 추출
 
 /* hidden -------------------------------------------------------------- */
+const h1 = getNode('h1');
+// console.log((h1.hidden = true));
+// inline block 두가지를 같이 사용할순없어 css가 우선순위를 가진다.
 
 // - hidden
 // * hidden은 HTML 속성으로, DOM 프로퍼티로 사용 가능
 // * hidden 프로퍼티는 기술적으로 style="display:none"와 동일
+
+h1.hidden = false;
+
+let toggle = false;
+
+// setInterval(() => {
+//   h1.hidden = toggle? false:true;
+
+//   toggle = !toggle;
+
+// }, 100);
