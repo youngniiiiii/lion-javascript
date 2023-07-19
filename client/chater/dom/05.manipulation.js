@@ -86,7 +86,7 @@ todoList.forEach((item) => {
 
 //함수만들기
 
-/* function insertLast(node, text) {
+function insertLast(node, text) {
   if (typeof node === 'string') node = getNode(node);
 
   if (node.nodeType !== document.ELEMENT_NODE) {
@@ -97,4 +97,4 @@ todoList.forEach((item) => {
   node.insertAdjacentHTML('beforeend', text);
 }
 
-insertLast('.todo', '<div>문자</div>'); */
+insertLast('.todo', '<div>문자</div>');

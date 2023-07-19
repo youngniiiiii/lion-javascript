@@ -30,3 +30,7 @@
 - [x] number [바로가기]()
 - [x] string [바로가기]()
 - [x] arrayType [바로가기]()
+- [x] tryChtch [바로가기]()
+- [x] Bom [바로가기]()
+- [x] Dom [바로가기]()
+- [x] event [바로가기]()
