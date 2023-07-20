@@ -1,7 +1,4 @@
-/* eslint-disable */
-console.log('hello js!');
-const a = 10;
-/* eslint-disable */
+import { getNode, getNodes } from './lib/index.js';
 
-const a = 10;
-console.log('hello js!');
+const container = getNode('.container');
+console.log(container);
