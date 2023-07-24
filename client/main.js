@@ -10,6 +10,7 @@ import {
   shake,
   showAlert,
 } from './lib/index.js';
+import { copy } from './lib/utils/copy.js';
 
 //[1]
 //1-1.주접 떨기 버튼을 클릭할 수 있는 핸드럴를 연결
@@ -82,11 +83,20 @@ submit.addEventListener('click', handleSubmit);
 //result 클릭이벤트 바인딩
 function handleCopy() {
   const text = resultArea.textContent; //4-3 text 변수에 담아줬어
-  navigator.clipboard.writeText(text); //4-2 클릭시 복사가 되게하기 @@@@@@@@@@@@@@@@@@@@ navigator는 BOM안에있는 기능중하나
+  // navigator.clipboard.writeText(text); //4-2 클릭시 복사가 되게하기 @@@@@@@@@@@@@@@@@@@@ navigator는 BOM안에있는 기능중하나
   // 4-4 클립보드 복사가 완료되면 그때! alert을 띄워야함  -> 이게 가장 정확할거야 지금은 성공하든 실패하던 상관없이 함수가 실행돼 사실 윗줄 없어도 얼럿은 잘떠
   //4-5 복사 다됐어? 그러면 얼럿 띄어줘 -> promise 사용
 
-  //4-1showAlert 사용해서 클립보드 복사시 복사완료 뜨게해주고 2초뒤에 사라지게해주기
-  showAlert('.alert-success', '클립보드 복사 완료!');
+  copy(text).then(() => {
+    //4-6 유틸함수 사용해주기
+    //4-1showAlert 사용해서 클립보드 복사시 복사완료 뜨게해주고 2초뒤에 사라지게해주기
+    showAlert('.alert-success', '클립보드 복사 완료!'); //4-7 안에 넣어주기
+  });
 }
 resultArea.addEventListener('click', handleCopy);
+
+//과제 5-1
+//이름을 제대로 입력했을때 클립보드에 복사가 될 수 있도록 상태관리 해주기
+//let starte = false ;
+//state = true;
+//if(state){...logic}
