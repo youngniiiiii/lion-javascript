@@ -1,26 +1,92 @@
-import { diceAnimation, getNode, getNodes, toggleClass } from './lib/index.js';
+import {
+  attr,
+  diceAnimation,
+  endScroll,
+  getNode,
+  getNodes,
+  insertLast,
+} from './lib/index.js';
 
-//part-1
-// 1.dice animation 불러오기
+// [phase-1] 주사위 굴리기
+// 1. dice animation 불러오기
+// 2. 주사위 굴리기 버튼을 클릭하면 diceAnimation 실행 될 수 있도록
+//       - 주사위 굴리기 버튼을 가져온다.
+//       - 이벤트 핸들러를 연결한다.
+//       - 애니메이션 코드를 작성한다.
+// 3. 애니메이션 토글 제어
+// 4. 클로저 + IIFE 를 사용한 변수 보호
 
-const [startButton, recordButton, resertButton] = getNodes(
-  '.buttonGroup> button'
-); // 1-3주사위 굴리기 버튼을 가져온다 // 버튼그룹 버틐들중 첫번째로 잡기 or 클래스 //이벤트위임!! 방법  전체부모 클릭하게해서 대상이 뭔지 체크해서 가져오게하기 , 모든버튼들을 배열로 가져오기
+// [phase-2] 레코드 리스트 control / view
+// 1. 주사위가 멈추면 기록/초기화 버튼 활성화
+// 2. hidden 속성 제어하기
+//       - 기록 버튼 이벤트 바인딩
+//       - hidden 속성 false 만들기
+//       - 초기화 버튼 이벤트 바인딩
+//       - hidden 속성 true 만들기
+// 3. 주사위 값을 가져와서 랜더링
 
-let isClicked = false; //3-2
-let stopAnimation; //함수 안에 있으면 계속 재할당이 된다. 함수 밖에 설정해줘야해
+// 배열 구조 분해 할당
 
-function handleRollingDice(e) {
-  // 1-5애니메이션 코드를 작성한다. diceAnimation() 실행되게 코드작성
-  if (!isClicked) {
-    //3-3
-    stopAnimation = setInterval(diceAnimation, 100); // 1-2 애니메이션이 주기적으로 움직여져 //
-    // console.log(stopAnimation);//6,9,12,15,등등등....
-  } else {
-    clearInterval(stopAnimation); //3-4 id값을 받아야해 setInterval 변수에 담기
-  }
-  isClicked = !isClicked;
-  // toggleClass(startButton, 'is-active'); //3-1 애니메이션 토글제어  변수를 만들어서 트루냐 펄스냐 조건처리
+const [startButton, recordButton, resetButton] = getNodes(
+  '.buttonGroup > button'
+);
+const recordListWrapper = getNode('.recordListWrapper');
+const tbody = getNode('.recordList tbody');
+
+let count = 0;
+let total = 0;
+
+function createItem(value) {
+  // 뿌려줄 템플릿 만들기
+  return /* html */ `
+    <tr>
+      <td>${++count}</td>
+      <td>${value}</td>
+      <td>${(total += value)}</td>
+    </tr>
+  `;
 }
 
-startButton.addEventListener('click', handleRollingDice); // 1-4이벤트 핸들러를 연결한다 주사위 굴리기 버튼을 클릭하면
+function renderRecordItem() {
+  // 큐브의 data-dice 값 가져오기
+  const diceValue = +attr('#cube', 'data-dice');
+  insertLast(tbody, createItem(diceValue));
+  endScroll(recordListWrapper);
+}
+
+const handleRollingDice = ((e) => {
+  let isClicked = false;
+  let stopAnimation;
+
+  return () => {
+    if (!isClicked) {
+      // 주사위 play
+      stopAnimation = setInterval(diceAnimation, 100);
+      recordButton.disabled = true;
+      resetButton.disabled = true;
+    } else {
+      // 주사위 stop
+      clearInterval(stopAnimation);
+      recordButton.disabled = false;
+      resetButton.disabled = false;
+    }
+
+    isClicked = !isClicked;
+  };
+})();
+
+function handleRecord() {
+  recordListWrapper.hidden = false;
+
+  renderRecordItem();
+}
+
+function handleReset() {
+  recordListWrapper.hidden = true;
+  recordButton.disabled = true;
+  resetButton.disabled = true;
+}
+
+startButton.addEventListener('click', handleRollingDice);
+recordButton.addEventListener('click', handleRecord);
+resetButton.addEventListener('click', handleReset);
