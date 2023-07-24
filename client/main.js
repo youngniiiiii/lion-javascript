@@ -1,5 +1,6 @@
 import {
   attr,
+  clearContents,
   diceAnimation,
   endScroll,
   getNode,
@@ -85,6 +86,10 @@ function handleReset() {
   recordListWrapper.hidden = true;
   recordButton.disabled = true;
   resetButton.disabled = true;
+
+  clearContents(tbody);
+  count = 0;
+  total = 0;
 }
 
 startButton.addEventListener('click', handleRollingDice);
