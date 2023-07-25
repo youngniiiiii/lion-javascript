@@ -6,6 +6,7 @@ import {
   getNode,
   getNodes,
   insertLast,
+  memo,
 } from './lib/index.js';
 
 // [phase-1] 주사위 굴리기
@@ -25,6 +26,11 @@ import {
 //       - 초기화 버튼 이벤트 바인딩
 //       - hidden 속성 true 만들기
 // 3. 주사위 값을 가져와서 랜더링
+// 4. 스크롤 위치 내리기
+// 5. 함수 분리
+
+// [phase-3] 초기화 시키기
+// 1. 아이템 지우기
 
 // 배열 구조 분해 할당
 
@@ -32,7 +38,17 @@ const [startButton, recordButton, resetButton] = getNodes(
   '.buttonGroup > button'
 );
 const recordListWrapper = getNode('.recordListWrapper');
-const tbody = getNode('.recordList tbody');
+memo('@tbody', () => getNode('.recordList tbody')); // setter
+
+// 진짜 진짜 쉬운 과제
+
+// disableElement(node)
+// enableElement(node)
+// isDisableState(node)  => true / false
+
+// visibleElement(node)
+// invisibleElement(node)
+// isVisibleState(node) => true / false
 
 let count = 0;
 let total = 0;
@@ -50,8 +66,10 @@ function createItem(value) {
 
 function renderRecordItem() {
   // 큐브의 data-dice 값 가져오기
-  const diceValue = +attr('#cube', 'data-dice');
-  insertLast(tbody, createItem(diceValue));
+  const diceValue = +attr(memo('cube'), 'data-dice');
+
+  insertLast(memo('@tbody'), createItem(diceValue));
+
   endScroll(recordListWrapper);
 }
 
@@ -76,9 +94,12 @@ const handleRollingDice = ((e) => {
   };
 })();
 
+// 회차 늘어날 수 있도록
+// diceValue 들어갈 수 있도록
+// total 값이 나올 수 있도록
+
 function handleRecord() {
   recordListWrapper.hidden = false;
-
   renderRecordItem();
 }
 
@@ -87,7 +108,8 @@ function handleReset() {
   recordButton.disabled = true;
   resetButton.disabled = true;
 
-  clearContents(tbody);
+  clearContents(memo('@tbody'));
+
   count = 0;
   total = 0;
 }
