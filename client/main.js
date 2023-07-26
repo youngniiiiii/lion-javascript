@@ -1,4 +1,4 @@
-import { xhr } from './lib/index.js';
+import { xhrPromise } from './lib/index.js';
 
 // xhr.get(주소넣고);
 // .then 성공하면 여기 실행
