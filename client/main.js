@@ -1,15 +1,16 @@
 /* global gsap */
 
 import {
+  attr,
   tiger,
   delayP,
   insertLast,
   getNode as $,
-  renderUserCard,
   changeColor,
   renderSpinner,
+  clearContents,
+  renderUserCard,
   renderEmptyCard,
-  attr,
 } from './lib/index.js';
 
 // [phase-1]
@@ -21,13 +22,23 @@ import {
 //      - inserLast 사용하기.
 // 4. 함수 분리 하기
 
+// [phase-2]
+// 1. 에러가 발생 했을 때
+// 2. empty svg를 생성하고 랜더링 해주세요
+// 3. 함수 분리
+
+// [phase-3]
+// json-server 구성
+// data 설계
+// get, delete 통신 localhost
+// delete => 리랜더링(clear,render)
+
 const userCardInner = $('.user-card-inner');
 
 async function renderUserList() {
   renderSpinner(userCardInner);
-
   try {
-    // await delayP({ timeout: 2000 });
+    await delayP();
 
     gsap.to('.loadingSpinner', {
       opacity: 0,
@@ -35,11 +46,7 @@ async function renderUserList() {
         $('.loadingSpinner').remove();
       },
     });
-
-    // $('.loadingSpinner').remove();
-
     const response = await tiger.get('http://localhost:3000/users');
-
     const userData = response.data;
 
     userData.forEach((item) => renderUserCard(userCardInner, item));
@@ -54,32 +61,31 @@ async function renderUserList() {
   } catch (err) {
     console.log(err);
     renderEmptyCard(userCardInner);
+    // location.href = '404.html'
   }
 }
 
 renderUserList();
 
-/* 
-- 삭제버튼누르면 삭제되게 딜리트통신을 하기
-    - 버튼클릭시 해당 아티클의 아이디값을 가져와야한다.
-    - 이빈트위임-button 선탣하기-클릭대상의 가장 가까운 메서든..
-    - -attr() , dataset 등으로 값을 가져오기
-     */
+// 버튼을 클릭 했을 때 해당 article의 id 값을 가져옴.
 
-function hendleDelete(e) {
+// - 이벤트 위임 e.target
+// - button 선택하기 -> 클릭한 대상의 가장 가까운... method
+// - attr() ,  dataset
+
+function handleDelete(e) {
   const button = e.target.closest('button');
   const article = e.target.closest('article');
 
   if (!article || !button) return;
-  // console.log(article);
-
-  // console.log(article.dataset.index);
 
   const id = attr(article, 'data-index').slice(5);
 
-  tiger.delete(`http://localhost:3000/users/${id}`);
-
-  //data-index="user-${id}"
+  tiger.delete(`http://localhost:3000/users/${id}`).then(() => {
+    // 컨텐츠 항목 전체 지우기
+    clearContents(userCardInner);
+    renderUserList();
+  });
 }
 
-userCardInner.addEventListener('click', hendleDelete);
+userCardInner.addEventListener('click', handleDelete);
